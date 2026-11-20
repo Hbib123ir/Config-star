@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101827">
+  <title>DARK VPN | Xray Subscription</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --glass: rgba(177, 255, 218, .13);
+      --line: rgba(174, 255, 213, .30);
+      --text: #f4fff9;
+      --muted: #c8e8d7;
+      --accent: #9af0bd;
+      --accent2: #b7a7ff;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      font-family: Vazirmatn, system-ui, sans-serif;
+      background: #11152d;
+    }
+    .bg {
+      position: fixed;
+      inset: 0;
+      z-index: -3;
+      background:
+        radial-gradient(ellipse at 15% 18%, rgba(111,145,255,.34), transparent 48%),
+        radial-gradient(ellipse at 88% 78%, rgba(166,112,255,.30), transparent 48%),
+        linear-gradient(135deg, #111a3a 0%, #25204b 48%, #171a3b 100%);
+    }
+    .bg:after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(10,15,38,.12), rgba(13,17,43,.28) 55%, rgba(10,13,34,.42));
+    }
+    body.day .bg { filter: brightness(1.15) saturate(1.05); }
+    body.night .bg { filter: brightness(.48) saturate(.8); }
+    .ambient {
+      position: fixed;
+      z-index: -1;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 85% 10%, #a9ffd52b, transparent 30%),
+        radial-gradient(circle at 10% 85%, #9b8bff2c, transparent 32%);
+    }
+    .wrap {
+      width: min(920px, calc(100% - 28px));
+      margin: auto;
+      padding: 20px 0 40px;
+    }
+    .top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .brand { display: flex; align-items: center; gap: 11px; }
+    .logo {
+      width: 44px; height: 44px; min-width: 44px;
+      border-radius: 14px;
+      border: 1px solid #ffffff35;
+      background: linear-gradient(135deg, #56d6ff, #8b7cff);
+      display: grid; place-items: center;
+      font-weight: 900; font-size: 18px; color: #071321;
+    }
+    .brand h1 { font-size: 18px; line-height: 1.2; margin: 0; font-weight: 900; }
+    .brand small { color: var(--muted); font-size: 11px; display: block; }
+    .theme {
+      border: 1px solid var(--line);
+      background: #050c16ad;
+      color: white;
+      border-radius: 30px;
+      padding: 10px 14px;
+      font: inherit;
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .hero { text-align: center; padding: 20px 12px 24px; }
+    .hero .eyebrow {
+      display: inline-block;
+      padding: 6px 12px;
+      border: 1px solid #8be4ff55;
+      border-radius: 30px;
+      color: #c7f4ff;
+      background: #09253a88;
+      font-size: 12px;
+    }
+    .hero h2 {
+      font-size: clamp(26px, 6vw, 42px);
+      line-height: 1.25;
+      margin: 14px 0 8px;
+      font-weight: 900;
+    }
+    .hero p { color: #e0e8f3; margin: 0; font-size: 14px; }
+    .panel {
+      position: relative;
+      background: linear-gradient(145deg, rgba(190,255,220,.17), rgba(156,211,255,.09));
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 20px;
+      backdrop-filter: blur(18px) saturate(145%);
+      -webkit-backdrop-filter: blur(18px) saturate(145%);
+      box-shadow: 0 10px 28px rgba(0,0,0,.24), inset 0 1px 0 rgba(255,255,255,.05);
+      margin-bottom: 18px;
+    }
+    .section-title {
+      font-size: 17px;
+      font-weight: 800;
+      margin: 0 0 15px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+    .section-title:before {
+      content: "";
+      width: 4px; height: 19px;
+      border-radius: 9px;
+      background: linear-gradient(#56d6ff, #8b7cff);
+    }
+    .ip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .ip-row strong { color: var(--accent); }
+    .meters {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+    .meter {
+      background: rgba(8,20,35,.45);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 16px;
+      padding: 12px 14px;
+      text-align: center;
+    }
+    .meter .label { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
+    .meter .value { font-size: 20px; font-weight: 800; color: var(--accent); }
+    .meter .sub { font-size: 11px; color: #aebbd0; margin-top: 2px; }
+    .meter.freq .value { color: #9deaff; }
+    .databases {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(92px, 1fr));
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .db-card {
+      background: rgba(8,20,35,.5);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 16px;
+      padding: 12px 8px;
+      text-align: center;
+      cursor: pointer;
+      transition: .2s;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .db-card:hover, .db-card.active {
+      border-color: #56d6ff;
+      background: rgba(86,214,255,.12);
+      transform: translateY(-2px);
+    }
+    .db-card img {
+      width: 28px; height: 28px;
+      border-radius: 8px;
+      margin-bottom: 6px;
+      display: block;
+      margin-inline: auto;
+    }
+    .db-card .code { color: var(--muted); font-size: 10px; margin-top: 2px; }
+    .field { display: flex; flex-direction: column; gap: 7px; margin-bottom: 14px; }
+    label { font-size: 12px; color: #d6e0ed; font-weight: 700; }
+    input, select {
+      width: 100%;
+      border: 1px solid #ffffff24;
+      background: rgba(176,238,204,.12);
+      color: #fff;
+      border-radius: 13px;
+      padding: 13px 12px;
+      font: inherit;
+      font-size: 14px;
+      outline: none;
+    }
+    select option { background: #101827; color: white; }
+    input:focus, select:focus {
+      border-color: #56d6ff;
+      box-shadow: 0 0 0 3px #56d6ff20;
+    }
+    .hint { font-size: 11px; color: #aebbd0; line-height: 1.8; }
+    .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
+    .btn {
+      border: 0;
+      border-radius: 14px;
+      padding: 13px 18px;
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+      transition: .2s;
+    }
+    .btn.primary {
+      background: linear-gradient(100deg, #56d6ff, #8b7cff);
+      color: #071321;
+      flex: 1;
+    }
+    .btn.secondary {
+      background: rgba(255,255,255,.075);
+      color: #fff;
+      border: 1px solid rgba(218,232,255,.2);
+    }
+    .btn:disabled { opacity: .5; cursor: not-allowed; }
+    .btn:hover:not(:disabled) { filter: brightness(1.08); }
+    .status {
+      min-height: 22px;
+      margin-top: 12px;
+      color: #bdeeff;
+      font-size: 12px;
+      line-height: 1.8;
+    }
+    .status.error { color: #ff9b9b; }
+    .output {
+      display: none;
+      margin-top: 16px;
+      padding: 16px;
+      border: 1px solid #56d6ff55;
+      border-radius: 16px;
+      background: rgba(160,232,190,.13);
+    }
+    .output.show { display: block; }
+    .output .link-row {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .output .link-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .output code {
+      display: block;
+      direction: ltr;
+      text-align: left;
+      overflow-wrap: anywhere;
+      word-break: break-all;
+      padding: 12px;
+      border-radius: 10px;
+      background: rgba(8,20,35,.65);
+      color: #9deaff;
+      font-size: 12px;
+      line-height: 1.7;
+      user-select: all;
+    }
+    .output .copy-btn {
+      align-self: flex-start;
+      padding: 8px 14px;
+      font-size: 12px;
+      border-radius: 10px;
+    }
+    .melli-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .melli-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(8,20,35,.4);
+      border-radius: 12px;
+      padding: 10px 14px;
+      font-size: 13px;
+    }
+    .melli-item .val {
+      font-weight: 800;
+      color: var(--accent);
+      font-variant-numeric: tabular-nums;
+    }
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .switch {
+      position: relative;
+      width: 48px; height: 26px;
+    }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider {
+      position: absolute;
+      inset: 0;
+      background: rgba(255,255,255,.15);
+      border-radius: 26px;
+      cursor: pointer;
+      transition: .25s;
+    }
+    .slider:before {
+      content: "";
+      position: absolute;
+      width: 20px; height: 20px;
+      left: 3px; bottom: 3px;
+      background: white;
+      border-radius: 50%;
+      transition: .25s;
+    }
+    .switch input:checked + .slider {
+      background: linear-gradient(100deg, #56d6ff, #8b7cff);
+    }
+    .switch input:checked + .slider:before {
+      transform: translateX(22px);
+    }
+    .foot {
+      text-align: center;
+      padding: 24px 12px 10px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .foot a { color: var(--accent); text-decoration: none; }
+    .note {
+      font-size: 11px;
+      color: #aebbd0;
+      line-height: 1.7;
+      margin-top: 10px;
+      padding: 10px 12px;
+      background: rgba(0,0,0,.2);
+      border-radius: 12px;
+    }
+    @media (max-width: 520px) {
+      .databases { grid-template-columns: repeat(auto-fill, minmax(78px, 1fr)); }
+      .meters { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body class="night">
+  <div class="bg"></div>
+  <div class="ambient"></div>
+
+  <div class="wrap">
+    <div class="top">
+      <div class="brand">
+        <div class="logo">D</div>
+        <div>
+          <h1>𝐃𝐚𝐫𝐤ᵛᵖⁿ</h1>
+          <small>Xray • Nahan • E-LITE</small>
+        </div>
+      </div>
+      <button class="theme" id="themeBtn" type="button">☀️ حالت روز</button>
+    </div>
+
+    <div class="hero">
+      <span class="eyebrow">DarkVPN • Connected to Nahan Gateway</span>
+      <h2>دریافت اشتراک Xray</h2>
+      <p>انتخاب دیتابیس و دریافت لینک اشتراک مستقیم از درگاه نهان</p>
+    </div>
+
+    <!-- IP & Meters -->
+    <div class="panel">
+      <div class="ip-row">
+        <div>Your IP: <strong id="userIp">در حال دریافت...</strong></div>
+        <div id="userLoc">در حال تشخیص موقعیت...</div>
+      </div>
+      <div class="meters">
+        <div class="meter">
+          <div class="label">وضعیت دیتاسنتر</div>
+          <div class="value" id="dcSpeed">58.4</div>
+          <div class="sub">MB/s • 43–73</div>
+        </div>
+        <div class="meter">
+          <div class="label">وضعیت شبکه کاربر</div>
+          <div class="value" id="userSpeed">2.8</div>
+          <div class="sub">MB/s • 0.6–5</div>
+        </div>
+        <div class="meter freq">
+          <div class="label">Feq</div>
+          <div class="value" id="freqValue">2.80</div>
+          <div class="sub" id="freqUnit">GHz</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Database Selection -->
+    <div class="panel">
+      <h3 class="section-title">انتخاب دیتابیس</h3>
+      <p class="hint" style="margin-top:-8px;margin-bottom:12px">ابتدا یک دیتابیس انتخاب کن تا لینک اشتراک فعال شود. (نمایشی — لینک واقعی از Nahan گرفته می‌شود)</p>
+      <div class="databases" id="dbGrid"></div>
+      <div class="status" id="dbStatus">هنوز دیتابیسی انتخاب نشده است.</div>
+    </div>
+
+    <!-- Subscription -->
+    <div class="panel">
+      <h3 class="section-title">دریافت اشتراک</h3>
+      <div class="field">
+        <label for="subUser">شناسه کاربر / ساب (sub)</label>
+        <input id="subUser" type="text" placeholder="مثلاً user یا نام پروفایل" value="user" autocomplete="off">
+        <div class="hint">این مقدار به صورت ?sub=... به آدرس درگاه اضافه می‌شود.</div>
+      </div>
+      <div class="field">
+        <label for="baseUrl">آدرس درگاه Nahan</label>
+        <input id="baseUrl" type="url" value="https://z3m-pp.zoe-lewis40481.workers.dev" dir="ltr" style="text-align:left">
+      </div>
+      <div class="actions">
+        <button class="btn primary" id="getSubBtn" type="button">دریافت لینک‌های اشتراک</button>
+        <button class="btn secondary" id="reloadBtn" type="button">بارگذاری مجدد</button>
+      </div>
+      <div class="status" id="subStatus"></div>
+      <div class="output" id="outputBox">
+        <div class="link-row">
+          <span class="link-label">V2rayNG / Shadowrocket (Base64)</span>
+          <code id="linkBase64"></code>
+          <button class="btn secondary copy-btn" data-target="linkBase64" type="button">کپی لینک</button>
+        </div>
+        <div class="link-row">
+          <span class="link-label">Clash Meta / Mihomo</span>
+          <code id="linkClash"></code>
+          <button class="btn secondary copy-btn" data-target="linkClash" type="button">کپی لینک</button>
+        </div>
+        <div class="link-row">
+          <span class="link-label">Sing-box / Hiddify</span>
+          <code id="linkSing"></code>
+          <button class="btn secondary copy-btn" data-target="linkSing" type="button">کپی لینک</button>
+        </div>
+        <div class="link-row">
+          <span class="link-label">V2Ray / Xray JSON</span>
+          <code id="linkVjson"></code>
+          <button class="btn secondary copy-btn" data-target="linkVjson" type="button">کپی لینک</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dark Melli -->
+    <div class="panel">
+      <h3 class="section-title">دارک ملی</h3>
+      <div class="toggle-row">
+        <div>
+          <strong>عبوردهنده‌های داخلی</strong>
+          <div class="hint" id="melliStatus">دارک ملی غیرفعال است.</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="melliToggle">
+          <span class="slider"></span>
+        </label>
+      </div>
+      <div class="melli-list" id="melliList">
+        <div class="melli-item"><span>عبور دهنده ۱ — مشهد Forker</span><span class="val" data-forker>2.60</span></div>
+        <div class="melli-item"><span>عبور دهنده ۲ — تهران Forker</span><span class="val" data-forker>5.10</span></div>
+        <div class="melli-item"><span>عبور دهنده ۳ — تهران Forker</span><span class="val" data-forker>10.30</span></div>
+        <div class="melli-item"><span>عبور دهنده ۴ — خرمشهر Forker</span><span class="val" data-forker>7.08</span></div>
+        <div class="melli-item"><span>عبور دهنده ۵ — اصفهان Forker</span><span class="val" data-forker>12.40</span></div>
+        <div class="melli-item"><span>عبور دهنده ۶ — شیراز Forker</span><span class="val" data-forker>8.70</span></div>
+        <div class="melli-item"><span>عبور دهنده ۷ — تبریز Forker</span><span class="val" data-forker>14.20</span></div>
+        <div class="melli-item"><span>عبور دهنده ۸ — رشت Forker</span><span class="val" data-forker>6.30</span></div>
+        <div class="melli-item"><span>عبور دهنده ۹ — اهواز Forker</span><span class="val" data-forker>18.60</span></div>
+        <div class="melli-item"><span>عبور دهنده ۱۰ — کرمانشاه Forker</span><span class="val" data-forker>9.40</span></div>
+      </div>
+      <div class="note">
+        این گزینه‌ها صرفاً انتخاب نمایشی در رابط کاربری هستند و تغییری در شبکه واقعی ایجاد نمی‌کنند.<br>
+        توجه: این سیستم برای زمان قطعی اینترنت جهانی است.
+      </div>
+    </div>
+
+    <div class="foot">
+      راه‌های ارتباطی · قدرت‌گرفته از Nahan Gateway<br>
+      <a href="https://z3m-pp.zoe-lewis40481.workers.dev" target="_blank" rel="noopener">درگاه نهان</a>
+    </div>
+  </div>
+
+  <script>
+    const DATABASES = [
+      { name: "Google", code: "GOG", domain: "google.com" },
+      { name: "Cloudflare", code: "CFE", domain: "cloudflare.com" },
+      { name: "Microsoft", code: "MIC", domain: "microsoft.com" },
+      { name: "Bitcoin", code: "BTC", domain: "bitcoin.org" },
+      { name: "Binance", code: "BNB", domain: "binance.com" },
+      { name: "Tether", code: "UST", domain: "tether.to" },
+      { name: "NOTCoin", code: "NTE", domain: "notcoin.org" },
+      { name: "YouTube", code: "YTB", domain: "youtube.com" },
+      { name: "Xbox", code: "XBX", domain: "xbox.com" },
+      { name: "PlayStation", code: "PSN", domain: "playstation.com" },
+      { name: "Samsung", code: "SAM", domain: "samsung.com" },
+      { name: "Apple", code: "APL", domain: "apple.com" },
+      { name: "Xiaomi", code: "XMI", domain: "mi.com" },
+      { name: "همراه اول", code: "MCI", domain: "mci.ir" },
+      { name: "رایتل", code: "RTL", domain: "rightel.ir" },
+      { name: "ایرانسل", code: "MNT", domain: "irancell.ir" },
+      { name: "Telegram", code: "TGM", domain: "telegram.org" },
+      { name: "Netflix", code: "NFX", domain: "netflix.com" },
+      { name: "Steam", code: "STM", domain: "steampowered.com" },
+      { name: "TikTok", code: "TTK", domain: "tiktok.com" },
+      { name: "Amazon", code: "AMZ", domain: "amazon.com" },
+      { name: "NASA", code: "NSA", domain: "nasa.gov" },
+      { name: "Tesla", code: "TSL", domain: "tesla.com" },
+      { name: "SpaceX", code: "SPX", domain: "spacex.com" }
+    ];
+
+    let selectedDb = null;
+
+    const $ = (id) => document.getElementById(id);
+
+    // Theme
+    $("themeBtn").addEventListener("click", () => {
+      const isDay = document.body.classList.toggle("day");
+      document.body.classList.toggle("night", !isDay);
+      $("themeBtn").textContent = isDay ? "🌙 حالت شب" : "☀️ حالت روز";
+    });
+
+    // Databases
+    const grid = $("dbGrid");
+    DATABASES.forEach((db) => {
+      const card = document.createElement("div");
+      card.className = "db-card";
+      card.dataset.code = db.code;
+      card.innerHTML = `
+        <img src="https://www.google.com/s2/favicons?domain=${db.domain}&sz=64" alt="${db.name}" loading="lazy">
+        <div>${db.name}</div>
+        <div class="code">${db.code}</div>
+      `;
+      card.addEventListener("click", () => {
+        document.querySelectorAll(".db-card").forEach(c => c.classList.remove("active"));
+        card.classList.add("active");
+        selectedDb = db;
+        $("dbStatus").textContent = `دیتابیس «${db.name}» انتخاب شد. حالا لینک اشتراک را دریافت کنید.`;
+        $("dbStatus").classList.remove("error");
+      });
+      grid.appendChild(card);
+    });
+
+    // IP lookup
+    async function loadIP() {
+      try {
+        const res = await fetch("https://api.ipify.org?format=json");
+        const data = await res.json();
+        $("userIp").textContent = data.ip;
+        try {
+          const geo = await fetch(`https://ipapi.co/${data.ip}/json/`);
+          const g = await geo.json();
+          $("userLoc").textContent = [g.city, g.country_name].filter(Boolean).join(" · ") || "نامشخص";
+        } catch {
+          $("userLoc").textContent = "موقعیت نامشخص";
+        }
+      } catch {
+        $("userIp").textContent = "نامشخص";
+        $("userLoc").textContent = "خطا در دریافت IP";
+      }
+    }
+    loadIP();
+
+    // Demo meters
+    function rand(min, max) { return (min + Math.random() * (max - min)).toFixed(1); }
+    setInterval(() => {
+      $("dcSpeed").textContent = rand(43, 73);
+      $("userSpeed").textContent = rand(0.6, 5);
+    }, 2200);
+
+    const freqs = ["2.80", "1.70", "2.05", "1.00"];
+    let fi = 0;
+    setInterval(() => {
+      fi = (fi + 1) % freqs.length;
+      $("freqValue").textContent = freqs[fi];
+      $("freqUnit").textContent = "GHz";
+    }, 2000);
+
+    // Melli forker demo
+    setInterval(() => {
+      document.querySelectorAll("[data-forker]").forEach((el, i) => {
+        el.textContent = (0.5 + Math.random() * 29.5).toFixed(i % 3 === 0 ? 2 : 1);
+      });
+    }, 2000);
+
+    $("melliToggle").addEventListener("change", () => {
+      const on = $("melliToggle").checked;
+      $("melliStatus").textContent = on ? "گزینه دارک ملی فعال شد." : "دارک ملی غیرفعال است.";
+      try { localStorage.setItem("darkvpn_melli", String(on)); } catch (_) {}
+    });
+    try {
+      if (localStorage.getItem("darkvpn_melli") === "true") {
+        $("melliToggle").checked = true;
+        $("melliStatus").textContent = "گزینه دارک ملی فعال شد.";
+      }
+    } catch (_) {}
+
+    // Subscription links
+    function buildLinks() {
+      const base = ($("baseUrl").value || "").replace(/\/+$/, "");
+      const user = ($("subUser").value || "user").trim() || "user";
+      if (!base) throw new Error("آدرس درگاه را وارد کنید.");
+      return {
+        base64: `${base}/sync?sub=${encodeURIComponent(user)}&flag=base64`,
+        clash:  `${base}/sync?sub=${encodeURIComponent(user)}&flag=clash`,
+        sing:   `${base}/sync?sub=${encodeURIComponent(user)}&flag=sing-box`,
+        vjson:  `${base}/sync?sub=${encodeURIComponent(user)}&flag=vjson`
+      };
+    }
+
+    function setStatus(msg, isError = false) {
+      const el = $("subStatus");
+      el.textContent = msg;
+      el.classList.toggle("error", isError);
+    }
+
+    $("getSubBtn").addEventListener("click", () => {
+      if (!selectedDb) {
+        setStatus("ابتدا یک دیتابیس انتخاب کنید.", true);
+        return;
+      }
+      try {
+        const links = buildLinks();
+        $("linkBase64").textContent = links.base64;
+        $("linkClash").textContent = links.clash;
+        $("linkSing").textContent = links.sing;
+        $("linkVjson").textContent = links.vjson;
+        $("outputBox").classList.add("show");
+        setStatus(`لینک‌های اشتراک برای دیتابیس «${selectedDb.name}» آماده شد. می‌توانید کپی کنید.`);
+      } catch (e) {
+        setStatus(e.message, true);
+      }
+    });
+
+    $("reloadBtn").addEventListener("click", () => {
+      $("outputBox").classList.remove("show");
+      setStatus("");
+      loadIP();
+    });
+
+    // Copy buttons
+    document.querySelectorAll(".copy-btn").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const code = $(btn.dataset.target);
+        try {
+          await navigator.clipboard.writeText(code.textContent);
+          const old = btn.textContent;
+          btn.textContent = "کپی شد ✓";
+          setTimeout(() => { btn.textContent = old; }, 1200);
+        } catch {
+          setStatus("کپی انجام نشد. لینک را دستی انتخاب کنید.", true);
+        }
+      });
+    });
+  </script>
+</body>
+</html>
