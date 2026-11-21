@@ -41,8 +41,29 @@
       background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Lion_and_Sun_flag.png/1280px-Lion_and_Sun_flag.png');
       background-size: cover; background-position: center;
     }
-    .brand h1 { font-size: 18px; margin: 0; font-weight: 900; }
-    .brand small { color: var(--muted); font-size: 11px; display: block; }
+    .brand h1 { font-size: 18px; margin: 0; font-weight: 900; line-height: 1.25; }
+    .tg-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 3px;
+      color: #7dd3fc;
+      text-decoration: none;
+      font-size: 11.5px;
+      font-weight: 600;
+      direction: ltr;
+      transition: color .2s, opacity .2s;
+    }
+    .tg-link:hover {
+      color: #bae6fd;
+    }
+    .tg-icon {
+      width: 15px;
+      height: 15px;
+      flex-shrink: 0;
+      display: inline-block;
+    }
+    .brand small { color: var(--muted); font-size: 11px; display: block; margin-top: 2px; }
     .theme {
       border: 1px solid var(--line); background: #050c16ad; color: white;
       border-radius: 30px; padding: 10px 14px; font: inherit; font-size: 13px; cursor: pointer;
@@ -66,7 +87,7 @@
 
     .panel {
       background: linear-gradient(145deg, rgba(190,255,220,.15), rgba(156,211,255,.08));
-      border: 1px solid var(--line); border-radius: 22px; padding: 18px;
+      border: 1px solid var(--line); border-radius: 22px; padding: 14px 16px;
       backdrop-filter: blur(16px); margin-bottom: 16px;
     }
     .section-title {
@@ -80,32 +101,84 @@
     .live-badge {
       display: inline-flex; align-items: center; gap: 6px;
       background: rgba(0,0,0,.25); border: 1px solid rgba(255,255,255,.1);
-      border-radius: 30px; padding: 4px 11px; font-size: 11px; margin-bottom: 14px;
+      border-radius: 30px; padding: 3px 10px; font-size: 10px; margin-bottom: 10px;
     }
     .live-dot {
-      width: 8px; height: 8px; border-radius: 50%; background: #4ade80;
+      width: 7px; height: 7px; border-radius: 50%; background: #4ade80;
       box-shadow: 0 0 8px #4ade80; animation: pulse 1.5s infinite;
     }
     @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.35} }
 
+    /* Compact Side-by-Side Speedometers */
     .gauges {
-      display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
     }
-    .gauge { text-align: center; }
-    .gauge-circle {
-      width: 110px; height: 110px; margin: 0 auto 8px; border-radius: 50%;
-      background: conic-gradient(from 180deg, #56d6ff, #8b7cff, #56d6ff);
-      padding: 7px;
+    .speedo-card {
+      background: rgba(8, 20, 35, .58);
+      border: 1px solid rgba(255, 255, 255, .11);
+      border-radius: 16px;
+      padding: 8px 4px;
+      text-align: center;
+      box-shadow: inset 0 0 16px rgba(0, 0, 0, .35);
+      min-width: 0;
     }
-    .gauge-circle.inner {
-      background: rgba(8,20,35,.9); border-radius: 50%; width: 100%; height: 100%;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    .speedo-wrap {
+      position: relative;
+      width: 104px;
+      height: 88px;
+      margin: 0 auto;
     }
-    .gauge-value { font-size: 20px; font-weight: 900; color: #9deaff; }
-    .gauge-unit { font-size: 10px; color: var(--muted); }
-    .gauge-label { font-size: 11px; color: var(--muted); line-height: 1.4; }
-    .gauge.user .gauge-circle { background: conic-gradient(from 180deg, #4ade80, #22d3ee, #4ade80); }
-    .gauge.freq .gauge-circle { background: conic-gradient(from 180deg, #c084fc, #818cf8, #c084fc); }
+    .speedo-svg {
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+    .needle {
+      transform-origin: 80px 80px;
+      transform: rotate(-120deg);
+      transition: transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+      filter: drop-shadow(0 0 3px rgba(255, 75, 75, .75));
+    }
+    .digital-readout {
+      position: absolute;
+      left: 50%;
+      bottom: 1px;
+      transform: translateX(-50%);
+      background: rgba(4, 12, 24, .92);
+      border: 1px solid rgba(255, 255, 255, .14);
+      border-radius: 8px;
+      padding: 1px 6px;
+      min-width: 56px;
+      direction: ltr;
+    }
+    .gauge-value {
+      font-size: 12px;
+      font-weight: 900;
+      color: #9deaff;
+      line-height: 1.15;
+    }
+    .speedo-card.user .gauge-value { color: #6ee7b7; }
+    .speedo-card.freq .gauge-value { color: #d8b4fe; }
+    .gauge-unit {
+      font-size: 8px;
+      color: var(--muted);
+      line-height: 1.1;
+    }
+    .gauge-label {
+      font-size: 10.5px;
+      font-weight: 700;
+      color: var(--text);
+      margin-top: 4px;
+      line-height: 1.3;
+    }
+    .gauge-label small {
+      color: var(--muted);
+      font-weight: 400;
+      font-size: 9px;
+      display: block;
+    }
 
     .databases {
       display: grid; grid-template-columns: repeat(auto-fill, minmax(95px, 1fr)); gap: 10px; margin-top: 10px;
@@ -122,6 +195,46 @@
     .db-card img { width: 28px; height: 28px; border-radius: 8px; margin: 0 auto 6px; display: block; }
     .db-card .code { color: var(--muted); font-size: 10px; margin-top: 2px; }
 
+    /* Location Selector with Flags */
+    .locations {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(105px, 1fr));
+      gap: 8px;
+      margin-top: 4px;
+    }
+    .loc-card {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      background: rgba(8, 20, 35, .55);
+      border: 1px solid rgba(255, 255, 255, .12);
+      border-radius: 13px;
+      padding: 9px 10px;
+      cursor: pointer;
+      transition: .2s;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .loc-card:hover, .loc-card.active {
+      border-color: var(--accent);
+      background: rgba(154, 240, 189, .16);
+      transform: translateY(-1px);
+    }
+    .loc-card img {
+      width: 20px;
+      height: 15px;
+      border-radius: 3px;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+    .loc-selected-info {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
     .field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
     label { font-size: 12px; color: #d6e0ed; font-weight: 700; }
     input {
@@ -129,6 +242,19 @@
       color: #fff; border-radius: 13px; padding: 12px; font: inherit; font-size: 14px; outline: none;
     }
     input:focus { border-color: #56d6ff; }
+    .plan-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--accent);
+      background: rgba(8, 20, 35, .5);
+      border: 1px solid rgba(154, 240, 189, .28);
+      border-radius: 10px;
+      padding: 6px 10px;
+      margin-bottom: 10px;
+    }
     .hint { font-size: 11px; color: #aebbd0; }
     .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 6px; }
     .btn {
@@ -141,9 +267,12 @@
     .status.success { color: #9af0bd; }
     .output { display: none; margin-top: 14px; padding: 14px; border: 1px solid #56d6ff55; border-radius: 14px; background: rgba(160,232,190,.12); }
     .output.show { display: block; }
+    .link-item { margin-bottom: 12px; }
+    .link-item:last-child { margin-bottom: 0; }
     .output code {
       display: block; direction: ltr; text-align: left; word-break: break-all;
       padding: 10px; border-radius: 10px; background: rgba(8,20,35,.7); color: #9deaff; font-size: 12px;
+      user-select: all;
     }
     .copy-btn { margin-top: 6px; padding: 7px 12px; font-size: 12px; border-radius: 10px; }
     .melli-list { display: grid; gap: 7px; margin-top: 10px; }
@@ -167,21 +296,115 @@
     .foot { text-align: center; padding: 20px 12px; color: var(--muted); font-size: 12px; }
     .foot a { color: var(--accent); text-decoration: none; }
     .note { font-size: 11px; color: #aebbd0; margin-top: 10px; padding: 10px; background: rgba(0,0,0,.2); border-radius: 12px; }
+
+    /* Front-of-screen DB Selection Toast / Modal */
+    .db-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      background: rgba(5, 10, 24, .45);
+      backdrop-filter: blur(4px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .28s ease;
+    }
+    .db-overlay.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .db-modal {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 22px;
+      border-radius: 18px;
+      background: rgba(10, 22, 42, .94);
+      border: 1px solid rgba(86, 214, 255, .45);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, .55);
+      color: #f4fff9;
+      font-size: 14px;
+      font-weight: 800;
+      transform: translateY(10px) scale(.97);
+      transition: transform .28s ease, border-color .28s ease, background .28s ease;
+    }
+    .db-overlay.show .db-modal {
+      transform: translateY(0) scale(1);
+    }
+    .db-modal.done {
+      border-color: rgba(154, 240, 189, .7);
+      background: rgba(11, 36, 32, .96);
+      color: #9af0bd;
+    }
+    .db-spinner {
+      width: 20px;
+      height: 20px;
+      border: 2.5px solid rgba(157, 234, 255, .25);
+      border-top-color: #56d6ff;
+      border-radius: 50%;
+      animation: spin .75s linear infinite;
+      flex-shrink: 0;
+    }
+    .db-modal.done .db-spinner {
+      display: none;
+    }
+    .db-check {
+      display: none;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: rgba(154, 240, 189, .18);
+      color: #9af0bd;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      flex-shrink: 0;
+    }
+    .db-modal.done .db-check {
+      display: inline-flex;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 380px) {
+      .speedo-wrap { width: 88px; height: 76px; }
+      .gauge-label { font-size: 9.5px; }
+    }
     @media (max-width: 500px) {
-      .gauges { grid-template-columns: 1fr; }
       .databases { grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); }
+      .locations { grid-template-columns: repeat(auto-fill, minmax(92px, 1fr)); }
     }
   </style>
 </head>
 <body class="night">
   <div class="bg"></div>
+
+  <!-- Front Overlay Message -->
+  <div class="db-overlay" id="dbOverlay" role="status" aria-live="polite">
+    <div class="db-modal" id="dbModal">
+      <span class="db-spinner"></span>
+      <span class="db-check">✓</span>
+      <span id="dbOverlayText">درحال انتخاب دیتابیس</span>
+    </div>
+  </div>
+
   <div class="wrap">
     <div class="top">
       <div class="brand">
         <div class="logo"></div>
         <div>
           <h1>Config Star</h1>
-          <small>کانفیگ استار • Xray</small>
+          <a class="tg-link" href="https://t.me/Config_Star_1" target="_blank" rel="noopener noreferrer">
+            <svg class="tg-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 0 0-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
+            </svg>
+            <span>@Config_Star_1</span>
+          </a>
+          <small>کانفیگ استار • VLESS</small>
         </div>
       </div>
       <button class="theme" id="themeBtn">☀️ حالت روز</button>
@@ -192,43 +415,108 @@
       <div class="public-ip-card">
         <div class="public-ip-main">
           <span>Your IP:</span>
-          <img id="ipFlag" style="display:none">
+          <img id="ipFlag" style="display:none" alt="Flag">
           <strong id="userIp">در حال دریافت...</strong>
         </div>
         <div class="public-ip-location" id="userLoc">در حال تشخیص موقعیت...</div>
       </div>
-      <h2>دریافت اشتراک Xray</h2>
-      <p>انتخاب دیتابیس و دریافت لینک اشتراک</p>
+      <h2>دریافت اشتراک VLESS</h2>
+      <p>انتخاب دیتابیس و دریافت لینک‌های اشتراک</p>
     </div>
 
-    <!-- Meters -->
+    <!-- Compact Speedometer Meters -->
     <div class="panel">
       <div class="live-badge">
         <span class="live-dot"></span>
         <span>LIVE • NORMAL</span>
-        <span style="opacity:.6;margin-right:6px">مانیتورینگ ترافیک</span>
+        <span style="opacity:.6;margin-right:4px">مانیتورینگ</span>
       </div>
       <div class="gauges">
-        <div class="gauge">
-          <div class="gauge-circle"><div class="gauge-circle inner">
-            <div class="gauge-value" id="dcSpeed">58.4</div>
-            <div class="gauge-unit">MB/s</div>
-          </div></div>
-          <div class="gauge-label">وضعیت دیتاسنتر<br><small>43–73</small></div>
+        <!-- DataCenter Gauge -->
+        <div class="speedo-card dc">
+          <div class="speedo-wrap">
+            <svg class="speedo-svg" viewBox="0 0 160 135">
+              <defs>
+                <linearGradient id="gradDc" x1="0%" y1="100%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#38bdf8"/>
+                  <stop offset="55%" stop-color="#818cf8"/>
+                  <stop offset="100%" stop-color="#f43f5e"/>
+                </linearGradient>
+              </defs>
+              <circle cx="80" cy="80" r="68" fill="rgba(4,12,24,0.85)" stroke="rgba(255,255,255,0.12)" stroke-width="2"/>
+              <path d="M 28.04 110 A 60 60 0 1 1 131.96 110" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="8" stroke-linecap="round"/>
+              <path d="M 28.04 110 A 60 60 0 1 1 131.96 110" fill="none" stroke="url(#gradDc)" stroke-width="8" stroke-linecap="round"/>
+              <g class="ticks" data-ticks></g>
+              <g class="needle" id="dcNeedle">
+                <polygon points="77,82 80,22 83,82" fill="#ff4d4f"/>
+              </g>
+              <circle cx="80" cy="80" r="8" fill="#1e293b" stroke="#9deaff" stroke-width="2"/>
+              <circle cx="80" cy="80" r="3" fill="#ff4d4f"/>
+            </svg>
+            <div class="digital-readout">
+              <div class="gauge-value" id="dcSpeed">58.4</div>
+              <div class="gauge-unit">MB/s</div>
+            </div>
+          </div>
+          <div class="gauge-label">دیتاسنتر<small>43–73</small></div>
         </div>
-        <div class="gauge user">
-          <div class="gauge-circle"><div class="gauge-circle inner">
-            <div class="gauge-value" id="userSpeed">2.8</div>
-            <div class="gauge-unit">MB/s</div>
-          </div></div>
-          <div class="gauge-label">وضعیت شبکه کاربر<br><small>0.6–5</small></div>
+
+        <!-- User Network Gauge -->
+        <div class="speedo-card user">
+          <div class="speedo-wrap">
+            <svg class="speedo-svg" viewBox="0 0 160 135">
+              <defs>
+                <linearGradient id="gradUser" x1="0%" y1="100%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#4ade80"/>
+                  <stop offset="60%" stop-color="#22d3ee"/>
+                  <stop offset="100%" stop-color="#facc15"/>
+                </linearGradient>
+              </defs>
+              <circle cx="80" cy="80" r="68" fill="rgba(4,12,24,0.85)" stroke="rgba(255,255,255,0.12)" stroke-width="2"/>
+              <path d="M 28.04 110 A 60 60 0 1 1 131.96 110" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="8" stroke-linecap="round"/>
+              <path d="M 28.04 110 A 60 60 0 1 1 131.96 110" fill="none" stroke="url(#gradUser)" stroke-width="8" stroke-linecap="round"/>
+              <g class="ticks" data-ticks></g>
+              <g class="needle" id="userNeedle">
+                <polygon points="77,82 80,22 83,82" fill="#ff4d4f"/>
+              </g>
+              <circle cx="80" cy="80" r="8" fill="#1e293b" stroke="#6ee7b7" stroke-width="2"/>
+              <circle cx="80" cy="80" r="3" fill="#ff4d4f"/>
+            </svg>
+            <div class="digital-readout">
+              <div class="gauge-value" id="userSpeed">2.8</div>
+              <div class="gauge-unit">MB/s</div>
+            </div>
+          </div>
+          <div class="gauge-label">شبکه کاربر<small>0.6–5</small></div>
         </div>
-        <div class="gauge freq">
-          <div class="gauge-circle"><div class="gauge-circle inner">
-            <div class="gauge-value" id="freqValue">2.80</div>
-            <div class="gauge-unit">GHz</div>
-          </div></div>
-          <div class="gauge-label">Feq</div>
+
+        <!-- Feq / Peq Gauge -->
+        <div class="speedo-card freq">
+          <div class="speedo-wrap">
+            <svg class="speedo-svg" viewBox="0 0 160 135">
+              <defs>
+                <linearGradient id="gradFreq" x1="0%" y1="100%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#a855f7"/>
+                  <stop offset="55%" stop-color="#6366f1"/>
+                  <stop offset="100%" stop-color="#ec4899"/>
+                </linearGradient>
+              </defs>
+              <circle cx="80" cy="80" r="68" fill="rgba(4,12,24,0.85)" stroke="rgba(255,255,255,0.12)" stroke-width="2"/>
+              <path d="M 28.04 110 A 60 60 0 1 1 131.96 110" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="8" stroke-linecap="round"/>
+              <path d="M 28.04 110 A 60 60 0 1 1 131.96 110" fill="none" stroke="url(#gradFreq)" stroke-width="8" stroke-linecap="round"/>
+              <g class="ticks" data-ticks></g>
+              <g class="needle" id="freqNeedle">
+                <polygon points="77,82 80,22 83,82" fill="#ff4d4f"/>
+              </g>
+              <circle cx="80" cy="80" r="8" fill="#1e293b" stroke="#d8b4fe" stroke-width="2"/>
+              <circle cx="80" cy="80" r="3" fill="#ff4d4f"/>
+            </svg>
+            <div class="digital-readout">
+              <div class="gauge-value" id="freqValue">2.80</div>
+              <div class="gauge-unit">GHz</div>
+            </div>
+          </div>
+          <div class="gauge-label">Peq / Feq<small>1.0–2.8</small></div>
         </div>
       </div>
     </div>
@@ -244,39 +532,41 @@
     <!-- Subscription -->
     <div class="panel">
       <h3 class="section-title">دریافت اشتراک</h3>
+      <div class="plan-badge">حجم: ۱۰۰ گیگابایت • مدت اعتبار: ۱۰ روز • پروتکل: VLESS • نام: telegram:@config_star_1</div>
       <div class="field">
-        <label>شناسه کاربر / ساب</label>
-        <input id="subUser" type="text" value="user" placeholder="user">
+        <label for="subUser">انتخاب نام دلخواه</label>
+        <input id="subUser" type="text" value="100 گیک" placeholder="نام دلخواه خود را وارد کنید">
       </div>
       <div class="field">
-        <label>آدرس درگاه</label>
-        <input id="baseUrl" type="url" value="https://pixel-sky-670.nhbhmsdwd.workers.dev" dir="ltr" style="text-align:left">
+        <label>انتخاب لوکیشن</label>
+        <div class="locations" id="locGrid"></div>
+        <div class="loc-selected-info" id="locStatus">لوکیشن انتخاب‌شده: آلمان (DE)</div>
       </div>
       <div class="actions">
-        <button class="btn primary" id="getSubBtn">دریافت لینک‌های اشتراک</button>
+        <button class="btn primary" id="getSubBtn">دریافت لینک اشتراک</button>
         <button class="btn secondary" id="reloadBtn">بارگذاری مجدد</button>
       </div>
       <div class="status" id="subStatus"></div>
       <div class="output" id="outputBox">
-        <div style="margin-bottom:10px">
-          <div style="font-size:12px;color:var(--accent);margin-bottom:4px">Base64</div>
-          <code id="linkBase64"></code>
-          <button class="btn secondary copy-btn" data-target="linkBase64">کپی</button>
+        <div class="link-item">
+          <div style="font-size:12px;color:var(--accent);margin-bottom:4px">لینک تشخیص خودکار</div>
+          <code id="linkAuto"></code>
+          <button type="button" class="btn secondary copy-btn" data-target="linkAuto">کپی</button>
         </div>
-        <div style="margin-bottom:10px">
-          <div style="font-size:12px;color:var(--accent);margin-bottom:4px">Clash</div>
+        <div class="link-item">
+          <div style="font-size:12px;color:var(--accent);margin-bottom:4px">لینک v2rayng</div>
+          <code id="linkV2rayng"></code>
+          <button type="button" class="btn secondary copy-btn" data-target="linkV2rayng">کپی</button>
+        </div>
+        <div class="link-item">
+          <div style="font-size:12px;color:var(--accent);margin-bottom:4px">لینک sing box</div>
+          <code id="linkSingbox"></code>
+          <button type="button" class="btn secondary copy-btn" data-target="linkSingbox">کپی</button>
+        </div>
+        <div class="link-item">
+          <div style="font-size:12px;color:var(--accent);margin-bottom:4px">لینک clash</div>
           <code id="linkClash"></code>
-          <button class="btn secondary copy-btn" data-target="linkClash">کپی</button>
-        </div>
-        <div style="margin-bottom:10px">
-          <div style="font-size:12px;color:var(--accent);margin-bottom:4px">Sing-box</div>
-          <code id="linkSing"></code>
-          <button class="btn secondary copy-btn" data-target="linkSing">کپی</button>
-        </div>
-        <div>
-          <div style="font-size:12px;color:var(--accent);margin-bottom:4px">V2Ray JSON</div>
-          <code id="linkVjson"></code>
-          <button class="btn secondary copy-btn" data-target="linkVjson">کپی</button>
+          <button type="button" class="btn secondary copy-btn" data-target="linkClash">کپی</button>
         </div>
       </div>
     </div>
@@ -311,7 +601,7 @@
 
     <div class="foot">
       کانفیگ استار · Config Star<br>
-      <a href="https://pixel-sky-670.nhbhmsdwd.workers.dev" target="_blank">درگاه ساخت کانفیگ</a>
+      <a href="https://t.me/Config_Star_1" target="_blank" rel="noopener noreferrer">@Config_Star_1</a>
     </div>
   </div>
 
@@ -343,9 +633,59 @@
       { name: "SpaceX", code: "SPX", domain: "spacex.com" }
     ];
 
+    const LOCATIONS = [
+      { name: "آلمان", code: "DE" },
+      { name: "هلند", code: "NL" },
+      { name: "فرانسه", code: "FR" },
+      { name: "انگلیس", code: "GB" },
+      { name: "آمریکا", code: "US" },
+      { name: "کانادا", code: "CA" },
+      { name: "ترکیه", code: "TR" },
+      { name: "امارات", code: "AE" },
+      { name: "ژاپن", code: "JP" },
+      { name: "سنگاپور", code: "SG" }
+    ];
+
+    const SUB_BASE_URL = "https://pixel-sky-670.nhbhmsdwd.workers.dev/sync";
+    const DEFAULT_SUB_PARAM = "100%20%DA%AF%DB%8C%DA%A9";
+
     let selectedDb = null;
+    let selectedLoc = LOCATIONS[0];
     let isSelecting = false;
+    let selectTimer = null;
+    let hideOverlayTimer = null;
     const $ = id => document.getElementById(id);
+
+    // Draw speedometer ticks (-120deg to +120deg)
+    document.querySelectorAll("[data-ticks]").forEach(group => {
+      const totalTicks = 18;
+      for (let i = 0; i <= totalTicks; i++) {
+        const angle = -120 + (i / totalTicks) * 240;
+        const isMajor = i % 3 === 0;
+        const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        line.setAttribute("x1", "80");
+        line.setAttribute("y1", isMajor ? "26" : "29");
+        line.setAttribute("x2", "80");
+        line.setAttribute("y2", "35");
+        line.setAttribute("stroke", isMajor ? "rgba(255,255,255,0.85)" : "rgba(255,255,255,0.35)");
+        line.setAttribute("stroke-width", isMajor ? "2.2" : "1.3");
+        line.setAttribute("stroke-linecap", "round");
+        line.setAttribute("transform", `rotate(${angle} 80 80)`);
+        group.appendChild(line);
+      }
+    });
+
+    function setNeedle(needleId, value, min, max) {
+      const clamped = Math.max(min, Math.min(max, Number(value)));
+      const ratio = (clamped - min) / (max - min);
+      const deg = -120 + ratio * 240;
+      $(needleId).style.transform = `rotate(${deg}deg)`;
+    }
+
+    // Set initial needle positions
+    setNeedle("dcNeedle", 58.4, 0, 100);
+    setNeedle("userNeedle", 2.8, 0, 6);
+    setNeedle("freqNeedle", 2.80, 0, 3.5);
 
     // Theme
     $("themeBtn").onclick = () => {
@@ -354,35 +694,70 @@
       $("themeBtn").textContent = day ? "🌙 حالت شب" : "☀️ حالت روز";
     };
 
+    // Locations with flags
+    const locGrid = $("locGrid");
+    LOCATIONS.forEach((loc, idx) => {
+      const card = document.createElement("button");
+      card.type = "button";
+      card.className = "loc-card" + (idx === 0 ? " active" : "");
+      card.innerHTML = `
+        <img src="https://flagcdn.com/24x18/${loc.code.toLowerCase()}.png" alt="${loc.name}">
+        <span>${loc.name}</span>
+      `;
+      card.onclick = () => {
+        selectedLoc = loc;
+        document.querySelectorAll(".loc-card").forEach(c => c.classList.remove("active"));
+        card.classList.add("active");
+        $("locStatus").textContent = `لوکیشن انتخاب‌شده: ${loc.name} (${loc.code})`;
+      };
+      locGrid.appendChild(card);
+    });
+
     // Databases
     const grid = $("dbGrid");
     DATABASES.forEach(db => {
       const card = document.createElement("div");
       card.className = "db-card";
       card.innerHTML = `
-        <img src="https://www.google.com/s2/favicons?domain=\( {db.domain}&sz=64" alt=" \){db.name}">
+        <img src="https://www.google.com/s2/favicons?domain=${encodeURIComponent(db.domain)}&sz=64" alt="${db.name}">
         <div>${db.name}</div>
         <div class="code">${db.code}</div>
       `;
       card.onclick = () => {
         if (isSelecting) return;
         isSelecting = true;
+        clearTimeout(selectTimer);
+        clearTimeout(hideOverlayTimer);
+
         document.querySelectorAll(".db-card").forEach(c => {
           c.classList.remove("active");
           c.classList.add("disabled");
         });
         card.classList.add("active");
         card.classList.remove("disabled");
-        \( ("dbStatus").textContent = `در حال انتخاب « \){db.name}»...`;
+
+        $("dbStatus").textContent = `درحال انتخاب دیتابیس (${db.name})...`;
         $("dbStatus").className = "status";
 
-        setTimeout(() => {
+        $("dbModal").classList.remove("done");
+        $("dbOverlayText").textContent = "درحال انتخاب دیتابیس";
+        $("dbOverlay").classList.add("show");
+
+        selectTimer = setTimeout(() => {
           selectedDb = db;
-          \( ("dbStatus").textContent = `دیتابیس « \){db.name}» با موفقیت انتخاب شد.`;
+          $("dbStatus").textContent = `دیتابیس انتخاب شد (${db.name}).`;
           $("dbStatus").className = "status success";
+
+          $("dbModal").classList.add("done");
+          $("dbOverlayText").textContent = "دیتابیس انتخاب شد";
+
           document.querySelectorAll(".db-card").forEach(c => c.classList.remove("disabled"));
           isSelecting = false;
-        }, 5000);
+
+          hideOverlayTimer = setTimeout(() => {
+            $("dbOverlay").classList.remove("show");
+          }, 900);
+        }, 4000);
       };
       grid.appendChild(card);
     });
@@ -394,14 +769,16 @@
         const d = await r.json();
         $("userIp").textContent = d.ip;
         try {
-          const g = await (await fetch(`https://ipapi.co/${d.ip}/json/`)).json();
+          const g = await (await fetch(`https://ipapi.co/${encodeURIComponent(d.ip)}/json/`)).json();
           $("userLoc").textContent = [g.city, g.country_name].filter(Boolean).join(" · ") || "نامشخص";
           if (g.country_code) {
             const f = $("ipFlag");
             f.src = `https://flagcdn.com/24x18/${g.country_code.toLowerCase()}.png`;
             f.style.display = "inline-block";
           }
-        } catch { $("userLoc").textContent = "موقعیت نامشخص"; }
+        } catch {
+          $("userLoc").textContent = "موقعیت نامشخص";
+        }
       } catch {
         $("userIp").textContent = "نامشخص";
         $("userLoc").textContent = "خطا در دریافت IP";
@@ -409,20 +786,26 @@
     }
     loadIP();
 
-    // Live numbers (fixed)
+    // Live numbers & needles
     function rand(min, max) {
       return (min + Math.random() * (max - min)).toFixed(1);
     }
     setInterval(() => {
-      $("dcSpeed").textContent = rand(43, 73);
-      $("userSpeed").textContent = rand(0.6, 5);
+      const dcVal = rand(43, 73);
+      const userVal = rand(0.6, 5);
+      $("dcSpeed").textContent = dcVal;
+      $("userSpeed").textContent = userVal;
+      setNeedle("dcNeedle", dcVal, 0, 100);
+      setNeedle("userNeedle", userVal, 0, 6);
     }, 1800);
 
     const freqs = ["2.80", "1.70", "2.05", "1.00", "2.40", "1.50"];
     let fi = 0;
     setInterval(() => {
       fi = (fi + 1) % freqs.length;
-      $("freqValue").textContent = freqs[fi];
+      const fVal = freqs[fi];
+      $("freqValue").textContent = fVal;
+      setNeedle("freqNeedle", fVal, 0, 3.5);
     }, 1600);
 
     // Melli numbers
@@ -437,15 +820,15 @@
       $("melliStatus").textContent = on ? "گزینه دارک ملی فعال شد." : "دارک ملی غیرفعال است.";
     };
 
-    // Links
-    function buildLinks() {
-      const base = (\( ("baseUrl").value || "").replace(/\/+ \)/, "");
-      const user = ($("subUser").value || "user").trim() || "user";
+    function buildSubLinks() {
+      const raw = ($("subUser").value || "").trim();
+      const subParam = (!raw || raw === "100 گیک") ? DEFAULT_SUB_PARAM : encodeURIComponent(raw);
+      const autoLink = `${SUB_BASE_URL}?sub=${subParam}`;
       return {
-        base64: `\( {base}/sync?sub= \){encodeURIComponent(user)}&flag=base64`,
-        clash: `\( {base}/sync?sub= \){encodeURIComponent(user)}&flag=clash`,
-        sing: `\( {base}/sync?sub= \){encodeURIComponent(user)}&flag=sing-box`,
-        vjson: `\( {base}/sync?sub= \){encodeURIComponent(user)}&flag=vjson`
+        auto: autoLink,
+        v2rayng: autoLink,
+        singbox: `${autoLink}&flag=singbox`,
+        clash: `${autoLink}&flag=clash`
       };
     }
 
@@ -455,30 +838,107 @@
         $("subStatus").className = "status error";
         return;
       }
-      const links = buildLinks();
-      $("linkBase64").textContent = links.base64;
+      const links = buildSubLinks();
+      $("linkAuto").textContent = links.auto;
+      $("linkV2rayng").textContent = links.v2rayng;
+      $("linkSingbox").textContent = links.singbox;
       $("linkClash").textContent = links.clash;
-      $("linkSing").textContent = links.sing;
-      $("linkVjson").textContent = links.vjson;
       $("outputBox").classList.add("show");
-      \( ("subStatus").textContent = `لینک‌های « \){selectedDb.name}» آماده شد.`;
+      $("subStatus").textContent = "لینک‌های اشتراک آماده کپی هستند.";
       $("subStatus").className = "status success";
     };
 
     $("reloadBtn").onclick = () => {
+      clearTimeout(selectTimer);
+      clearTimeout(hideOverlayTimer);
+      $("dbOverlay").classList.remove("show");
+      selectedDb = null;
+      selectedLoc = LOCATIONS[0];
+      isSelecting = false;
+      document.querySelectorAll(".db-card").forEach(c => c.classList.remove("active", "disabled"));
+      document.querySelectorAll(".loc-card").forEach((c, i) => c.classList.toggle("active", i === 0));
+      $("locStatus").textContent = `لوکیشن انتخاب‌شده: ${selectedLoc.name} (${selectedLoc.code})`;
+      $("dbStatus").textContent = "هنوز دیتابیسی انتخاب نشده است.";
+      $("dbStatus").className = "status";
       $("outputBox").classList.remove("show");
       $("subStatus").textContent = "";
       loadIP();
     };
 
+    async function copyTextSafe(text, targetEl) {
+      if (!text) return false;
+
+      if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
+        try {
+          await navigator.clipboard.writeText(text);
+          return true;
+        } catch {}
+      }
+
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.setAttribute("readonly", "");
+      ta.style.position = "fixed";
+      ta.style.top = "-9999px";
+      ta.style.left = "-9999px";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+
+      const selection = document.getSelection();
+      const prevRange = selection && selection.rangeCount > 0 ? selection.getRangeAt(0) : null;
+
+      ta.focus();
+      ta.select();
+      ta.setSelectionRange(0, ta.value.length);
+
+      let copied = false;
+      try {
+        copied = document.execCommand("copy");
+      } catch {
+        copied = false;
+      }
+
+      document.body.removeChild(ta);
+
+      if (prevRange && selection) {
+        selection.removeAllRanges();
+        selection.addRange(prevRange);
+      }
+
+      if (!copied && targetEl && selection && document.createRange) {
+        const range = document.createRange();
+        range.selectNodeContents(targetEl);
+        selection.removeAllRanges();
+        selection.addRange(range);
+      }
+
+      return copied;
+    }
+
     document.querySelectorAll(".copy-btn").forEach(btn => {
       btn.onclick = async () => {
-        try {
-          await navigator.clipboard.writeText($(btn.dataset.target).textContent);
-          const old = btn.textContent;
+        const targetEl = $(btn.dataset.target);
+        const text = targetEl ? targetEl.textContent.trim() : "";
+        if (!text) return;
+
+        const old = btn.dataset.origText || btn.textContent;
+        btn.dataset.origText = old;
+
+        const ok = await copyTextSafe(text, targetEl);
+        if (ok) {
           btn.textContent = "کپی شد ✓";
-          setTimeout(() => btn.textContent = old, 1200);
-        } catch {}
+          $("subStatus").textContent = "لینک اشتراک با موفقیت در کلیپ‌بورد کپی شد.";
+          $("subStatus").className = "status success";
+        } else {
+          btn.textContent = "انتخاب شد";
+          $("subStatus").textContent = "دسترسی خودکار کلیپ‌بورد در این محیط محدود است؛ متن انتخاب شد تا دستی کپی کنید.";
+          $("subStatus").className = "status error";
+        }
+
+        clearTimeout(btn._copyTimer);
+        btn._copyTimer = setTimeout(() => {
+          btn.textContent = old;
+        }, 1500);
       };
     });
   </script>
