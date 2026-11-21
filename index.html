@@ -3,350 +3,689 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#101827">
+  <meta name="theme-color" content="#0b1220">
   <title>Config Star | کانفیگ استار</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     :root {
-      --glass: rgba(177, 255, 218, .13);
-      --line: rgba(174, 255, 213, .30);
-      --text: #f4fff9;
-      --muted: #c8e8d7;
-      --accent: #9af0bd;
-      --accent2: #b7a7ff;
+      --bg: #0b1220;
+      --glass: rgba(255, 255, 255, 0.07);
+      --glass-strong: rgba(255, 255, 255, 0.11);
+      --line: rgba(255, 255, 255, 0.13);
+      --text: #f0f7ff;
+      --muted: #94a8c4;
+      --accent: #5eead4;
+      --accent2: #818cf8;
+      --accent3: #38bdf8;
+      --danger: #f87171;
     }
-    * { box-sizing: border-box; }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
+
     body {
-      margin: 0;
       min-height: 100vh;
       color: var(--text);
       font-family: Vazirmatn, system-ui, sans-serif;
-      background: #11152d;
+      background: #0b1220;
+      overflow-x: hidden;
     }
+
+    /* Background Flag */
     .bg {
       position: fixed;
       inset: 0;
       z-index: -3;
-      background:
-        radial-gradient(ellipse at 15% 18%, rgba(111,145,255,.34), transparent 48%),
-        radial-gradient(ellipse at 88% 78%, rgba(166,112,255,.30), transparent 48%),
-        linear-gradient(135deg, #111a3a 0%, #25204b 48%, #171a3b 100%);
+      background-image: url('https://upload.wikimedia.org/wikipedia/commons/6/60/Lion_and_Sun_flag.png');
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
     }
-    .bg:after {
+
+    .bg::after {
       content: "";
       position: absolute;
       inset: 0;
-      background: linear-gradient(180deg, rgba(10,15,38,.12), rgba(13,17,43,.28) 55%, rgba(10,13,34,.42));
+      background: linear-gradient(160deg, rgba(8,12,24,0.84) 0%, rgba(11,18,32,0.80) 40%, rgba(9,14,28,0.87) 100%);
     }
-    body.day .bg { filter: brightness(1.15) saturate(1.05); }
-    body.night .bg { filter: brightness(.48) saturate(.8); }
+
     .ambient {
       position: fixed;
-      z-index: -1;
       inset: 0;
+      z-index: -1;
       pointer-events: none;
       background:
-        radial-gradient(circle at 85% 10%, #a9ffd52b, transparent 30%),
-        radial-gradient(circle at 10% 85%, #9b8bff2c, transparent 32%);
+        radial-gradient(circle at 80% 15%, rgba(94,234,212,0.06), transparent 40%),
+        radial-gradient(circle at 15% 75%, rgba(129,140,248,0.05), transparent 45%);
     }
+
+    body.day .bg::after {
+      background: linear-gradient(160deg, rgba(15,25,45,0.68) 0%, rgba(20,30,55,0.62) 40%, rgba(12,20,40,0.72) 100%);
+    }
+
     .wrap {
-      width: min(920px, calc(100% - 28px));
-      margin: auto;
-      padding: 20px 0 40px;
+      width: min(960px, calc(100% - 24px));
+      margin: 0 auto;
+      padding: 18px 0 48px;
     }
+
+    /* Header */
     .top {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      margin-bottom: 18px;
+      margin-bottom: 22px;
     }
-    .brand { display: flex; align-items: center; gap: 11px; }
-    .logo {
-      width: 44px; height: 44px; min-width: 44px;
-      border-radius: 14px;
-      border: 1px solid #ffffff35;
-      background: linear-gradient(135deg, #56d6ff, #8b7cff);
-      display: grid; place-items: center;
-      font-weight: 900; font-size: 18px; color: #071321;
-    }
-    .brand h1 { font-size: 18px; line-height: 1.2; margin: 0; font-weight: 900; }
-    .brand small { color: var(--muted); font-size: 11px; display: block; }
-    .theme {
-      border: 1px solid var(--line);
-      background: #050c16ad;
-      color: white;
-      border-radius: 30px;
-      padding: 10px 14px;
-      font: inherit;
-      font-size: 13px;
-      cursor: pointer;
-    }
-    .hero { text-align: center; padding: 20px 12px 24px; }
-    .hero .eyebrow {
-      display: inline-block;
-      padding: 6px 12px;
-      border: 1px solid #8be4ff55;
-      border-radius: 30px;
-      color: #c7f4ff;
-      background: #09253a88;
-      font-size: 12px;
-    }
-    .hero h2 {
-      font-size: clamp(26px, 6vw, 42px);
-      line-height: 1.25;
-      margin: 14px 0 8px;
-      font-weight: 900;
-    }
-    .hero p { color: #e0e8f3; margin: 0; font-size: 14px; }
-    .panel {
-      position: relative;
-      background: linear-gradient(145deg, rgba(190,255,220,.17), rgba(156,211,255,.09));
-      border: 1px solid var(--line);
-      border-radius: 24px;
-      padding: 20px;
-      backdrop-filter: blur(18px) saturate(145%);
-      -webkit-backdrop-filter: blur(18px) saturate(145%);
-      box-shadow: 0 10px 28px rgba(0,0,0,.24), inset 0 1px 0 rgba(255,255,255,.05);
-      margin-bottom: 18px;
-    }
-    .section-title {
-      font-size: 17px;
-      font-weight: 800;
-      margin: 0 0 15px;
+
+    .brand {
       display: flex;
       align-items: center;
-      gap: 9px;
+      gap: 12px;
     }
-    .section-title:before {
+
+    .logo {
+      width: 48px;
+      height: 48px;
+      min-width: 48px;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.2);
+      box-shadow: 0 4px 18px rgba(0,0,0,0.35);
+      background: #111;
+    }
+
+    .logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .brand h1 {
+      font-size: 19px;
+      font-weight: 900;
+      line-height: 1.2;
+    }
+
+    .brand small {
+      color: var(--muted);
+      font-size: 11px;
+      display: block;
+      margin-top: 1px;
+    }
+
+    .theme {
+      border: 1px solid var(--line);
+      background: var(--glass);
+      color: white;
+      border-radius: 50px;
+      padding: 10px 16px;
+      font: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      backdrop-filter: blur(12px);
+      transition: all 0.25s;
+    }
+    .theme:hover {
+      background: var(--glass-strong);
+    }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      padding: 12px 10px 28px;
+    }
+
+    .hero .eyebrow {
+      display: inline-block;
+      padding: 6px 14px;
+      border: 1px solid rgba(56,189,248,0.35);
+      border-radius: 50px;
+      color: #7dd3fc;
+      background: rgba(14,165,233,0.12);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .hero h2 {
+      font-size: clamp(28px, 6.5vw, 44px);
+      font-weight: 900;
+      line-height: 1.25;
+      margin: 14px 0 10px;
+      background: linear-gradient(90deg, #e0f2fe, #c7d2fe, #a5f3fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      color: var(--muted);
+      font-size: 14.5px;
+    }
+
+    /* Panel */
+    .panel {
+      position: relative;
+      background: linear-gradient(160deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 22px;
+      backdrop-filter: blur(22px) saturate(160%);
+      -webkit-backdrop-filter: blur(22px) saturate(160%);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.07);
+      margin-bottom: 18px;
+      overflow: hidden;
+    }
+
+    .panel::before {
       content: "";
-      width: 4px; height: 19px;
-      border-radius: 9px;
-      background: linear-gradient(#56d6ff, #8b7cff);
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
     }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 800;
+      margin: 0 0 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-title::before {
+      content: "";
+      width: 4px;
+      height: 18px;
+      border-radius: 4px;
+      background: linear-gradient(180deg, #38bdf8, #818cf8);
+    }
+
+    /* IP */
     .ip-row {
       display: flex;
       flex-wrap: wrap;
       gap: 12px;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 16px;
+      margin-bottom: 22px;
       font-size: 13px;
       color: var(--muted);
+      padding: 12px 14px;
+      background: rgba(0,0,0,0.28);
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.06);
     }
-    .ip-row strong { color: var(--accent); }
+
+    .ip-row strong {
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    /* Gauges */
     .meters {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: 12px;
-      margin-bottom: 8px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
     }
-    .meter {
-      background: rgba(8,20,35,.45);
-      border: 1px solid rgba(255,255,255,.08);
-      border-radius: 16px;
-      padding: 12px 14px;
-      text-align: center;
+
+    @media (max-width: 680px) {
+      .meters { grid-template-columns: 1fr; gap: 20px; }
     }
-    .meter .label { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
-    .meter .value { font-size: 20px; font-weight: 800; color: var(--accent); }
-    .meter .sub { font-size: 11px; color: #aebbd0; margin-top: 2px; }
-    .meter.freq .value { color: #9deaff; }
-    .databases {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(92px, 1fr));
+
+    .gauge-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       gap: 10px;
-      margin-top: 10px;
     }
-    .db-card {
-      background: rgba(8,20,35,.5);
-      border: 1px solid rgba(255,255,255,.1);
-      border-radius: 16px;
-      padding: 12px 8px;
+
+    .gauge {
+      position: relative;
+      width: 150px;
+      height: 150px;
+    }
+
+    .gauge-body {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 50% 50%, #0f172a 0%, #0f172a 58%, transparent 59%),
+        conic-gradient(from 220deg, #1e293b 0deg, #1e293b 260deg, transparent 260deg);
+      box-shadow:
+        0 0 0 6px rgba(15,23,42,0.9),
+        0 0 0 8px rgba(255,255,255,0.07),
+        inset 0 0 20px rgba(0,0,0,0.5),
+        0 10px 30px rgba(0,0,0,0.45);
+    }
+
+    .gauge-arc {
+      position: absolute;
+      inset: 8px;
+      border-radius: 50%;
+      background: conic-gradient(from 220deg, #22d3ee 0deg, #34d399 90deg, #a3e635 160deg, #fbbf24 210deg, #f87171 260deg, transparent 260deg);
+      mask: radial-gradient(circle, transparent 63%, black 64%);
+      -webkit-mask: radial-gradient(circle, transparent 63%, black 64%);
+      opacity: 0.9;
+    }
+
+    .gauge-ticks {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+    }
+
+    .tick {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 2px;
+      height: 8px;
+      background: rgba(255,255,255,0.25);
+      transform-origin: center 0;
+      margin-left: -1px;
+    }
+
+    .tick.major {
+      height: 12px;
+      width: 2.5px;
+      background: rgba(255,255,255,0.45);
+    }
+
+    .needle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 4px;
+      height: 58px;
+      margin-left: -2px;
+      margin-top: -58px;
+      background: linear-gradient(to top, #f87171, #fca5a5);
+      border-radius: 4px 4px 1px 1px;
+      transform-origin: bottom center;
+      transform: rotate(-130deg);
+      transition: transform 0.85s cubic-bezier(0.34, 1.35, 0.64, 1);
+      z-index: 5;
+      box-shadow: 0 0 8px rgba(248,113,113,0.5);
+    }
+
+    .needle::after {
+      content: "";
+      position: absolute;
+      bottom: -6px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 14px;
+      height: 14px;
+      background: #f87171;
+      border-radius: 50%;
+      box-shadow: 0 0 10px rgba(248,113,113,0.6);
+    }
+
+    .needle::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      border-bottom: 10px solid #fca5a5;
+    }
+
+    .gauge-value {
+      position: absolute;
+      bottom: 28px;
+      left: 0;
+      right: 0;
       text-align: center;
-      cursor: pointer;
-      transition: .2s;
+      z-index: 6;
+    }
+
+    .gauge-value .num {
+      font-size: 22px;
+      font-weight: 900;
+      color: #e0f2fe;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .gauge-value .unit {
       font-size: 11px;
+      color: var(--muted);
+      margin-top: 2px;
       font-weight: 600;
     }
-    .db-card:hover, .db-card.active {
-      border-color: #56d6ff;
-      background: rgba(86,214,255,.12);
+
+    .gauge-label {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .gauge-range {
+      font-size: 10.5px;
+      color: rgba(148,168,196,0.7);
+      margin-top: -4px;
+    }
+
+    .gauge-card.dc .needle { background: linear-gradient(to top, #22d3ee, #67e8f9); box-shadow: 0 0 8px rgba(34,211,238,0.5); }
+    .gauge-card.dc .needle::after { background: #22d3ee; box-shadow: 0 0 10px rgba(34,211,238,0.6); }
+    .gauge-card.dc .needle::before { border-bottom-color: #67e8f9; }
+
+    .gauge-card.user .needle { background: linear-gradient(to top, #a78bfa, #c4b5fd); box-shadow: 0 0 8px rgba(167,139,250,0.5); }
+    .gauge-card.user .needle::after { background: #a78bfa; box-shadow: 0 0 10px rgba(167,139,250,0.6); }
+    .gauge-card.user .needle::before { border-bottom-color: #c4b5fd; }
+
+    .gauge-card.freq .needle { background: linear-gradient(to top, #34d399, #6ee7b7); box-shadow: 0 0 8px rgba(52,211,153,0.5); }
+    .gauge-card.freq .needle::after { background: #34d399; box-shadow: 0 0 10px rgba(52,211,153,0.6); }
+    .gauge-card.freq .needle::before { border-bottom-color: #6ee7b7; }
+
+    /* Databases */
+    .databases {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+      gap: 10px;
+      margin-top: 6px;
+    }
+
+    .db-card {
+      background: rgba(0,0,0,0.28);
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 16px;
+      padding: 14px 8px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.34, 1.2, 0.64, 1);
+      font-size: 11.5px;
+      font-weight: 600;
+    }
+
+    .db-card:hover {
+      border-color: rgba(56,189,248,0.45);
+      background: rgba(56,189,248,0.1);
+      transform: translateY(-3px);
+    }
+
+    .db-card.active {
+      border-color: #38bdf8;
+      background: rgba(56,189,248,0.16);
+      box-shadow: 0 0 20px rgba(56,189,248,0.18);
       transform: translateY(-2px);
     }
+
     .db-card img {
-      width: 28px; height: 28px;
-      border-radius: 8px;
-      margin-bottom: 6px;
+      width: 30px;
+      height: 30px;
+      border-radius: 9px;
+      margin-bottom: 7px;
       display: block;
       margin-inline: auto;
     }
-    .db-card .code { color: var(--muted); font-size: 10px; margin-top: 2px; }
-    .field { display: flex; flex-direction: column; gap: 7px; margin-bottom: 14px; }
-    label { font-size: 12px; color: #d6e0ed; font-weight: 700; }
-    input, select {
+
+    .db-card .code {
+      color: var(--muted);
+      font-size: 10px;
+      margin-top: 3px;
+      font-weight: 500;
+    }
+
+    /* Form */
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      margin-bottom: 15px;
+    }
+
+    label {
+      font-size: 12.5px;
+      color: #cbd5e1;
+      font-weight: 700;
+    }
+
+    input {
       width: 100%;
-      border: 1px solid #ffffff24;
-      background: rgba(176,238,204,.12);
+      border: 1px solid rgba(255,255,255,0.11);
+      background: rgba(0,0,0,0.32);
       color: #fff;
-      border-radius: 13px;
-      padding: 13px 12px;
+      border-radius: 14px;
+      padding: 13px 14px;
       font: inherit;
       font-size: 14px;
       outline: none;
+      transition: all 0.2s;
     }
-    select option { background: #101827; color: white; }
-    input:focus, select:focus {
-      border-color: #56d6ff;
-      box-shadow: 0 0 0 3px #56d6ff20;
+
+    input:focus {
+      border-color: #38bdf8;
+      box-shadow: 0 0 0 3px rgba(56,189,248,0.18);
+      background: rgba(0,0,0,0.42);
     }
-    .hint { font-size: 11px; color: #aebbd0; line-height: 1.8; }
-    .actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px; }
+
+    .hint {
+      font-size: 11.5px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+
     .btn {
       border: 0;
       border-radius: 14px;
-      padding: 13px 18px;
+      padding: 13px 20px;
       font: inherit;
       font-weight: 800;
       cursor: pointer;
-      transition: .2s;
+      transition: all 0.25s;
     }
+
     .btn.primary {
-      background: linear-gradient(100deg, #56d6ff, #8b7cff);
-      color: #071321;
+      background: linear-gradient(105deg, #38bdf8, #818cf8);
+      color: #0b1220;
       flex: 1;
+      box-shadow: 0 4px 20px rgba(56,189,248,0.3);
     }
+
+    .btn.primary:hover:not(:disabled) {
+      filter: brightness(1.1);
+      transform: translateY(-1px);
+    }
+
     .btn.secondary {
-      background: rgba(255,255,255,.075);
+      background: rgba(255,255,255,0.07);
       color: #fff;
-      border: 1px solid rgba(218,232,255,.2);
+      border: 1px solid rgba(255,255,255,0.13);
     }
-    .btn:disabled { opacity: .5; cursor: not-allowed; }
-    .btn:hover:not(:disabled) { filter: brightness(1.08); }
+
+    .btn.secondary:hover:not(:disabled) {
+      background: rgba(255,255,255,0.12);
+    }
+
     .status {
       min-height: 22px;
-      margin-top: 12px;
-      color: #bdeeff;
-      font-size: 12px;
-      line-height: 1.8;
+      margin-top: 14px;
+      color: #7dd3fc;
+      font-size: 13px;
+      line-height: 1.7;
     }
-    .status.error { color: #ff9b9b; }
+
+    .status.error { color: var(--danger); }
+
     .output {
       display: none;
-      margin-top: 16px;
-      padding: 16px;
-      border: 1px solid #56d6ff55;
-      border-radius: 16px;
-      background: rgba(160,232,190,.13);
+      margin-top: 18px;
+      padding: 18px;
+      border: 1px solid rgba(56,189,248,0.28);
+      border-radius: 18px;
+      background: rgba(14,165,233,0.07);
     }
-    .output.show { display: block; }
+
+    .output.show {
+      display: block;
+      animation: fadeIn 0.35s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     .output .link-row {
       display: flex;
       flex-direction: column;
       gap: 8px;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
+
+    .output .link-row:last-child { margin-bottom: 0; }
+
     .output .link-label {
-      font-size: 12px;
+      font-size: 12.5px;
       font-weight: 700;
       color: var(--accent);
     }
+
     .output code {
       display: block;
       direction: ltr;
       text-align: left;
       overflow-wrap: anywhere;
       word-break: break-all;
-      padding: 12px;
-      border-radius: 10px;
-      background: rgba(8,20,35,.65);
-      color: #9deaff;
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: rgba(0,0,0,0.48);
+      color: #7dd3fc;
       font-size: 12px;
       line-height: 1.7;
       user-select: all;
+      border: 1px solid rgba(255,255,255,0.06);
     }
+
     .output .copy-btn {
       align-self: flex-start;
-      padding: 8px 14px;
+      padding: 8px 16px;
       font-size: 12px;
       border-radius: 10px;
     }
-    .melli-list {
-      display: grid;
-      gap: 8px;
-      margin-top: 10px;
-    }
-    .melli-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: rgba(8,20,35,.4);
-      border-radius: 12px;
-      padding: 10px 14px;
-      font-size: 13px;
-    }
-    .melli-item .val {
-      font-weight: 800;
-      color: var(--accent);
-      font-variant-numeric: tabular-nums;
-    }
+
+    /* Melli */
     .toggle-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
+
     .switch {
       position: relative;
-      width: 48px; height: 26px;
+      width: 50px;
+      height: 28px;
+      flex-shrink: 0;
     }
+
     .switch input { opacity: 0; width: 0; height: 0; }
+
     .slider {
       position: absolute;
       inset: 0;
-      background: rgba(255,255,255,.15);
-      border-radius: 26px;
+      background: rgba(255,255,255,0.13);
+      border-radius: 28px;
       cursor: pointer;
-      transition: .25s;
+      transition: 0.3s;
     }
-    .slider:before {
+
+    .slider::before {
       content: "";
       position: absolute;
-      width: 20px; height: 20px;
-      left: 3px; bottom: 3px;
+      width: 22px;
+      height: 22px;
+      left: 3px;
+      bottom: 3px;
       background: white;
       border-radius: 50%;
-      transition: .25s;
+      transition: 0.3s;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
     }
+
     .switch input:checked + .slider {
-      background: linear-gradient(100deg, #56d6ff, #8b7cff);
+      background: linear-gradient(105deg, #38bdf8, #818cf8);
     }
-    .switch input:checked + .slider:before {
+
+    .switch input:checked + .slider::before {
       transform: translateX(22px);
     }
+
+    .melli-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .melli-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(0,0,0,0.28);
+      border-radius: 13px;
+      padding: 11px 15px;
+      font-size: 13px;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .melli-item .val {
+      font-weight: 800;
+      color: var(--accent);
+      font-variant-numeric: tabular-nums;
+      min-width: 42px;
+      text-align: left;
+    }
+
+    .note {
+      font-size: 11.5px;
+      color: var(--muted);
+      line-height: 1.75;
+      margin-top: 14px;
+      padding: 12px 14px;
+      background: rgba(0,0,0,0.28);
+      border-radius: 13px;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+
     .foot {
       text-align: center;
-      padding: 24px 12px 10px;
+      padding: 28px 12px 8px;
       color: var(--muted);
-      font-size: 12px;
+      font-size: 12.5px;
     }
-    .foot a { color: var(--accent); text-decoration: none; }
-    .note {
-      font-size: 11px;
-      color: #aebbd0;
-      line-height: 1.7;
-      margin-top: 10px;
-      padding: 10px 12px;
-      background: rgba(0,0,0,.2);
-      border-radius: 12px;
+
+    .foot a {
+      color: var(--accent3);
+      text-decoration: none;
+      font-weight: 600;
     }
+
     @media (max-width: 520px) {
-      .databases { grid-template-columns: repeat(auto-fill, minmax(78px, 1fr)); }
-      .meters { grid-template-columns: 1fr 1fr; }
+      .databases { grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); }
+      .gauge { width: 140px; height: 140px; }
     }
   </style>
 </head>
@@ -355,9 +694,12 @@
   <div class="ambient"></div>
 
   <div class="wrap">
+    <!-- Header -->
     <div class="top">
       <div class="brand">
-        <div class="logo">C</div>
+        <div class="logo">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/6/60/Lion_and_Sun_flag.png" alt="پرچم شیر و خورشید" loading="eager">
+        </div>
         <div>
           <h1>Config Star</h1>
           <small>کانفیگ استار • Xray</small>
@@ -366,33 +708,67 @@
       <button class="theme" id="themeBtn" type="button">☀️ حالت روز</button>
     </div>
 
+    <!-- Hero -->
     <div class="hero">
       <span class="eyebrow">Config Star • کانفیگ استار</span>
       <h2>دریافت اشتراک Xray</h2>
       <p>انتخاب دیتابیس و دریافت لینک اشتراک</p>
     </div>
 
-    <!-- IP & Meters -->
+    <!-- IP + Gauges -->
     <div class="panel">
       <div class="ip-row">
         <div>Your IP: <strong id="userIp">در حال دریافت...</strong></div>
         <div id="userLoc">در حال تشخیص موقعیت...</div>
       </div>
+
       <div class="meters">
-        <div class="meter">
-          <div class="label">وضعیت دیتاسنتر</div>
-          <div class="value" id="dcSpeed">58.4</div>
-          <div class="sub">MB/s • 43–73</div>
+        <div class="gauge-card dc">
+          <div class="gauge">
+            <div class="gauge-body">
+              <div class="gauge-arc"></div>
+              <div class="gauge-ticks" id="ticksDc"></div>
+              <div class="needle" id="needleDc"></div>
+              <div class="gauge-value">
+                <div class="num" id="dcSpeed">58.4</div>
+                <div class="unit">MB/s</div>
+              </div>
+            </div>
+          </div>
+          <div class="gauge-label">وضعیت دیتاسنتر</div>
+          <div class="gauge-range">۴۳ – ۷۳</div>
         </div>
-        <div class="meter">
-          <div class="label">وضعیت شبکه کاربر</div>
-          <div class="value" id="userSpeed">2.8</div>
-          <div class="sub">MB/s • 0.6–5</div>
+
+        <div class="gauge-card user">
+          <div class="gauge">
+            <div class="gauge-body">
+              <div class="gauge-arc"></div>
+              <div class="gauge-ticks" id="ticksUser"></div>
+              <div class="needle" id="needleUser"></div>
+              <div class="gauge-value">
+                <div class="num" id="userSpeed">2.8</div>
+                <div class="unit">MB/s</div>
+              </div>
+            </div>
+          </div>
+          <div class="gauge-label">وضعیت شبکه کاربر</div>
+          <div class="gauge-range">۰.۶ – ۵</div>
         </div>
-        <div class="meter freq">
-          <div class="label">Feq</div>
-          <div class="value" id="freqValue">2.80</div>
-          <div class="sub" id="freqUnit">GHz</div>
+
+        <div class="gauge-card freq">
+          <div class="gauge">
+            <div class="gauge-body">
+              <div class="gauge-arc"></div>
+              <div class="gauge-ticks" id="ticksFreq"></div>
+              <div class="needle" id="needleFreq"></div>
+              <div class="gauge-value">
+                <div class="num" id="freqValue">2.80</div>
+                <div class="unit">GHz</div>
+              </div>
+            </div>
+          </div>
+          <div class="gauge-label">فرکانس</div>
+          <div class="gauge-range">۱.۰۰ – ۲.۸۰</div>
         </div>
       </div>
     </div>
@@ -400,7 +776,7 @@
     <!-- Database Selection -->
     <div class="panel">
       <h3 class="section-title">انتخاب دیتابیس</h3>
-      <p class="hint" style="margin-top:-8px;margin-bottom:12px">ابتدا یک دیتابیس انتخاب کن تا لینک اشتراک فعال شود.</p>
+      <p class="hint" style="margin-top:-10px;margin-bottom:14px">ابتدا یک دیتابیس انتخاب کن تا لینک اشتراک فعال شود.</p>
       <div class="databases" id="dbGrid"></div>
       <div class="status" id="dbStatus">هنوز دیتابیسی انتخاب نشده است.</div>
     </div>
@@ -512,73 +888,147 @@
     ];
 
     let selectedDb = null;
+    const $ = id => document.getElementById(id);
 
-    const $ = (id) => document.getElementById(id);
+    // ========== Ticks ==========
+    function createTicks(containerId) {
+      const container = $(containerId);
+      if (!container) return;
+      const totalAngle = 260;
+      const startAngle = -130;
+      const steps = 26;
+      for (let i = 0; i <= steps; i++) {
+        const tick = document.createElement("div");
+        tick.className = "tick" + (i % 5 === 0 ? " major" : "");
+        const angle = startAngle + (totalAngle / steps) * i;
+        tick.style.transform = `rotate(${angle}deg) translateY(-68px)`;
+        container.appendChild(tick);
+      }
+    }
+    createTicks("ticksDc");
+    createTicks("ticksUser");
+    createTicks("ticksFreq");
 
-    // Theme
+    // ========== Needle ==========
+    function valueToAngle(value, min, max) {
+      const ratio = Math.min(Math.max((value - min) / (max - min), 0), 1);
+      return -130 + ratio * 260;
+    }
+
+    function setNeedle(needleId, value, min, max) {
+      const el = $(needleId);
+      if (!el) return;
+      const angle = valueToAngle(value, min, max);
+      el.style.transform = `rotate(${angle}deg)`;
+    }
+
+    // ========== Theme ==========
     $("themeBtn").addEventListener("click", () => {
       const isDay = document.body.classList.toggle("day");
       document.body.classList.toggle("night", !isDay);
       $("themeBtn").textContent = isDay ? "🌙 حالت شب" : "☀️ حالت روز";
     });
 
-    // Databases
+    // ========== Databases ==========
     const grid = $("dbGrid");
-    DATABASES.forEach((db) => {
-      const card = document.createElement("div");
-      card.className = "db-card";
-      card.dataset.code = db.code;
-      card.innerHTML = `
-        <img src="https://www.google.com/s2/favicons?domain=${db.domain}&sz=64" alt="${db.name}" loading="lazy">
-        <div>${db.name}</div>
-        <div class="code">${db.code}</div>
-      `;
-      card.addEventListener("click", () => {
-        document.querySelectorAll(".db-card").forEach(c => c.classList.remove("active"));
-        card.classList.add("active");
-        selectedDb = db;
-        $("dbStatus").textContent = `دیتابیس «${db.name}» انتخاب شد. حالا لینک اشتراک را دریافت کنید.`;
-        $("dbStatus").classList.remove("error");
+    if (grid) {
+      DATABASES.forEach(db => {
+        const card = document.createElement("div");
+        card.className = "db-card";
+        card.innerHTML = `
+          <img src="https://www.google.com/s2/favicons?domain=\( {db.domain}&sz=64" alt=" \){db.name}" loading="lazy">
+          <div>${db.name}</div>
+          <div class="code">${db.code}</div>
+        `;
+        card.addEventListener("click", () => {
+          document.querySelectorAll(".db-card").forEach(c => c.classList.remove("active"));
+          card.classList.add("active");
+          selectedDb = db;
+          \( ("dbStatus").textContent = `دیتابیس « \){db.name}» انتخاب شد. حالا لینک اشتراک را دریافت کنید.`;
+          $("dbStatus").classList.remove("error");
+        });
+        grid.appendChild(card);
       });
-      grid.appendChild(card);
-    });
+    }
 
-    // IP lookup
+    // ========== IP Detection (with fallbacks) ==========
     async function loadIP() {
-      try {
-        const res = await fetch("https://api.ipify.org?format=json");
-        const data = await res.json();
-        $("userIp").textContent = data.ip;
-        try {
-          const geo = await fetch(`https://ipapi.co/${data.ip}/json/`);
-          const g = await geo.json();
-          $("userLoc").textContent = [g.city, g.country_name].filter(Boolean).join(" · ") || "نامشخص";
-        } catch {
-          $("userLoc").textContent = "موقعیت نامشخص";
+      const ipEl = $("userIp");
+      const locEl = $("userLoc");
+
+      const apis = [
+        async () => {
+          const r = await fetch("https://api.ipify.org?format=json");
+          const d = await r.json();
+          return { ip: d.ip };
+        },
+        async () => {
+          const r = await fetch("https://ipapi.co/json/");
+          const d = await r.json();
+          return { ip: d.ip, city: d.city, country: d.country_name };
+        },
+        async () => {
+          const r = await fetch("https://api.ip.sb/geoip");
+          const d = await r.json();
+          return { ip: d.ip, city: d.city, country: d.country };
+        },
+        async () => {
+          const r = await fetch("https://ipinfo.io/json");
+          const d = await r.json();
+          return { ip: d.ip, city: d.city, country: d.country };
         }
-      } catch {
-        $("userIp").textContent = "نامشخص";
-        $("userLoc").textContent = "خطا در دریافت IP";
+      ];
+
+      for (const api of apis) {
+        try {
+          const data = await api();
+          if (data && data.ip) {
+            ipEl.textContent = data.ip;
+            const location = [data.city, data.country].filter(Boolean).join(" · ");
+            locEl.textContent = location || "موقعیت نامشخص";
+            return;
+          }
+        } catch (e) {
+          continue;
+        }
       }
+
+      ipEl.textContent = "نامشخص";
+      locEl.textContent = "خطا در دریافت IP";
     }
     loadIP();
 
-    // Demo meters
-    function rand(min, max) { return (min + Math.random() * (max - min)).toFixed(1); }
-    setInterval(() => {
-      $("dcSpeed").textContent = rand(43, 73);
-      $("userSpeed").textContent = rand(0.6, 5);
-    }, 2200);
+    // ========== Gauges Animation ==========
+    function rand(min, max) {
+      return +(min + Math.random() * (max - min)).toFixed(1);
+    }
 
-    const freqs = ["2.80", "1.70", "2.05", "1.00"];
+    // Initial
+    setNeedle("needleDc", 58.4, 43, 73);
+    setNeedle("needleUser", 2.8, 0.6, 5);
+    setNeedle("needleFreq", 2.80, 1.0, 2.8);
+
+    // DC + User
+    setInterval(() => {
+      const dc = rand(43, 73);
+      const user = rand(0.6, 5);
+      $("dcSpeed").textContent = dc;
+      $("userSpeed").textContent = user;
+      setNeedle("needleDc", dc, 43, 73);
+      setNeedle("needleUser", user, 0.6, 5);
+    }, 2300);
+
+    // Frequency
+    const freqs = [2.80, 1.70, 2.05, 1.00, 2.40, 1.90];
     let fi = 0;
     setInterval(() => {
       fi = (fi + 1) % freqs.length;
-      $("freqValue").textContent = freqs[fi];
-      $("freqUnit").textContent = "GHz";
+      const val = freqs[fi];
+      $("freqValue").textContent = val.toFixed(2);
+      setNeedle("needleFreq", val, 1.0, 2.8);
     }, 2000);
 
-    // Melli forker demo
+    // ========== Melli ==========
     setInterval(() => {
       document.querySelectorAll("[data-forker]").forEach((el, i) => {
         el.textContent = (0.5 + Math.random() * 29.5).toFixed(i % 3 === 0 ? 2 : 1);
@@ -590,6 +1040,7 @@
       $("melliStatus").textContent = on ? "گزینه دارک ملی فعال شد." : "دارک ملی غیرفعال است.";
       try { localStorage.setItem("darkvpn_melli", String(on)); } catch (_) {}
     });
+
     try {
       if (localStorage.getItem("darkvpn_melli") === "true") {
         $("melliToggle").checked = true;
@@ -597,16 +1048,16 @@
       }
     } catch (_) {}
 
-    // Subscription links
+    // ========== Subscription ==========
     function buildLinks() {
-      const base = ($("baseUrl").value || "").replace(/\/+$/, "");
+      const base = (\( ("baseUrl").value || "").replace(/\/+ \)/, "");
       const user = ($("subUser").value || "user").trim() || "user";
       if (!base) throw new Error("آدرس درگاه را وارد کنید.");
       return {
-        base64: `${base}/sync?sub=${encodeURIComponent(user)}&flag=base64`,
-        clash:  `${base}/sync?sub=${encodeURIComponent(user)}&flag=clash`,
-        sing:   `${base}/sync?sub=${encodeURIComponent(user)}&flag=sing-box`,
-        vjson:  `${base}/sync?sub=${encodeURIComponent(user)}&flag=vjson`
+        base64: `\( {base}/sync?sub= \){encodeURIComponent(user)}&flag=base64`,
+        clash:  `\( {base}/sync?sub= \){encodeURIComponent(user)}&flag=clash`,
+        sing:   `\( {base}/sync?sub= \){encodeURIComponent(user)}&flag=sing-box`,
+        vjson:  `\( {base}/sync?sub= \){encodeURIComponent(user)}&flag=vjson`
       };
     }
 
@@ -628,7 +1079,7 @@
         $("linkSing").textContent = links.sing;
         $("linkVjson").textContent = links.vjson;
         $("outputBox").classList.add("show");
-        setStatus(`لینک‌های اشتراک برای دیتابیس «${selectedDb.name}» آماده شد. می‌توانید کپی کنید.`);
+        setStatus(`لینک‌های اشتراک برای دیتابیس «${selectedDb.name}» آماده شد.`);
       } catch (e) {
         setStatus(e.message, true);
       }
@@ -640,15 +1091,15 @@
       loadIP();
     });
 
-    // Copy buttons
-    document.querySelectorAll(".copy-btn").forEach((btn) => {
+    // Copy
+    document.querySelectorAll(".copy-btn").forEach(btn => {
       btn.addEventListener("click", async () => {
         const code = $(btn.dataset.target);
         try {
           await navigator.clipboard.writeText(code.textContent);
           const old = btn.textContent;
           btn.textContent = "کپی شد ✓";
-          setTimeout(() => { btn.textContent = old; }, 1200);
+          setTimeout(() => btn.textContent = old, 1200);
         } catch {
           setStatus("کپی انجام نشد. لینک را دستی انتخاب کنید.", true);
         }
